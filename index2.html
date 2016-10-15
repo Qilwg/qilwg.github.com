@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta content="yes" name="apple-touch-fullscreen"/>
+<title>无标题文档</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+#box{
+	width:400%;
+	height:5rem;
+	overflow:hidden;	
+}
+#box ul{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
+#box li{
+	float:left;
+	width:25%;
+	height:100%;
+	font-size:5rem;
+	text-align:center;
+}
+ul li:nth-child(1){
+	background:#666;
+}
+ul li:nth-child(2){
+	background:#3F9;
+}
+ul li:nth-child(3){
+	background:#F3C;
+}
+ul li:nth-child(4){
+	background:#90F;
+}
+</style>
+<script>
+window.onload=function(){
+	var oUl=document.getElementById('ul');
+	var w=oUl.children[0].offsetWidth;
+	var len=oUl.children.length;
+	var x=0;
+	var inow=0;;
+		oUl.addEventListener('touchstart',function(ev){
+			oUl.style.transition='none'
+			var startX=ev.targetTouches[0].pageX;
+			var disX=startX-x;
+			function move(ev){
+				x=ev.targetTouches[0].pageX-disX;	
+				oUl.style.transform='translateX('+x+'px)';	                                                                      
+			};
+			function end(){
+				oUl.style.transition='1s all ease';
+				var endX=ev.changedTouches[0].pageX;
+				if(endX-startX>40){
+					inow--;
+				}else if(endX-startX<-40){
+					inow++;
+				};
+				inow=inow<0?0:inow;
+				inow=inow>len-1?len-1:inow;
+				x=-inow*w;
+					oUl.style.transform='translateX('+x+'px)';
+					document.removeEventListener('touchmove',move,false);
+					document.removeEventListener('touchend',end,false);	
+			};
+			document.addEventListener('touchmove',move,false);
+			document.addEventListener('touchend',end,false);
+			ev.preventDefault();
+		},false)
+};
+
+</script>
+
+</head>
+
+<body>
+<div id="box">
+<ul id="ul">
+	<li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+</div>
+
+
+</body>
+</html>
